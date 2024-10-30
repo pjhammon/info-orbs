@@ -25,23 +25,25 @@ GlobalTime *globalTime; // Initialize the global time
 
 String connectingString{""};
 
-WifiWidget *wifiWidget{ nullptr };
+WifiWidget *wifiWidget{nullptr};
 
 int connectionTimer{0};
 const int connectionTimeout{10000};
 bool isConnected{true};
 
-bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *bitmap) {
-    if (y >= tft.height())
-        return 0;
-    tft.pushImage(x, y, w, h, bitmap);
-    return 1;
+bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *bitmap)
+{
+  if (y >= tft.height())
+    return 0;
+  tft.pushImage(x, y, w, h, bitmap);
+  return 1;
 }
 
-ScreenManager* sm;
-WidgetSet* widgetSet;
+ScreenManager *sm;
+WidgetSet *widgetSet;
 
-void setup() {
+void setup()
+{
 
   buttonLeft.begin();
   buttonOK.begin();
@@ -81,6 +83,7 @@ void setup() {
   widgetSet->add(new ClockWidget(*sm));
   widgetSet->add(new StockWidget(*sm));
   widgetSet->add(new WeatherWidget(*sm));
+
 #ifdef WEB_DATA_WIDGET_URL
   widgetSet->add(new WebDataWidget(*sm, WEB_DATA_WIDGET_URL));
 #endif
@@ -89,27 +92,35 @@ void setup() {
 #endif
 }
 
-void loop() {
-  if (wifiWidget->isConnected() == false) {
+void loop()
+{
+  if (wifiWidget->isConnected() == false)
+  {
     wifiWidget->update();
     wifiWidget->draw();
-    widgetSet->setClearScreensOnDrawCurrent(); //clear screen after wifiWidget
+    widgetSet->setClearScreensOnDrawCurrent(); // clear screen after wifiWidget
     delay(100);
-  } else {
-    if (!widgetSet->initialUpdateDone()) {
+  }
+  else
+  {
+    if (!widgetSet->initialUpdateDone())
+    {
       widgetSet->initializeAllWidgetsData();
     }
     globalTime->updateTime();
 
-    if (buttonLeft.pressed()) {
+    if (buttonLeft.pressed())
+    {
       Serial.println("Left button pressed");
       widgetSet->prev();
     }
-    if (buttonOK.pressed()) {
+    if (buttonOK.pressed())
+    {
       Serial.println("OK button pressed");
       widgetSet->changeMode();
     }
-    if (buttonRight.pressed()) {
+    if (buttonRight.pressed())
+    {
       Serial.println("Right button pressed");
       widgetSet->next();
     }
